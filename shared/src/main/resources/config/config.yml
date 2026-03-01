@@ -245,7 +245,7 @@ proxy-support:
   # Supported types: PLUGIN, REDIS, RABBITMQ
   type: PLUGIN
   plugin:
-    # Compatible plugins: RedisBungee
+    # Compatible plugins: RedisBungee, TinsEyeVelocity
     # If enabled and compatible plugin is found, hook is enabled to work with proxied players
     name: RedisBungee
   redis:

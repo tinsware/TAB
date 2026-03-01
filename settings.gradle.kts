@@ -2,6 +2,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 dependencyResolutionManagement {
     repositories {
+        mavenLocal() // TinsEyeVelocity API (mvn install in tinseyevelocity repo first)
         mavenCentral() // Netty, SnakeYaml, json-simple, Guava, Kyori event, bStats, AuthLib, LuckPerms
         maven("https://repo.viaversion.com/") // ViaVersion
         maven("https://repo.william278.net/releases/") // VelocityScoreboardAPI

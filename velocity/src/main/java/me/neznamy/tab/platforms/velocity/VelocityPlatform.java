@@ -11,6 +11,7 @@ import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 import com.velocitypowered.api.scoreboard.ScoreboardManager;
 import lombok.Getter;
 import me.neznamy.tab.platforms.velocity.features.VelocityRedisSupport;
+import me.neznamy.tab.platforms.velocity.features.VelocityTinsEyeVelocitySupport;
 import me.neznamy.tab.platforms.velocity.hook.VelocityPremiumVanishHook;
 import me.neznamy.tab.shared.ProjectVariables;
 import me.neznamy.tab.shared.TAB;
@@ -122,6 +123,18 @@ public class VelocityPlatform extends ProxyPlatform {
             if (ReflectionUtils.classExists("com.imaginarycode.minecraft.redisbungee.RedisBungeeAPI") &&
                     RedisBungeeAPI.getRedisBungeeApi() != null) {
                 return new VelocityRedisSupport(this.plugin, channelName);
+            }
+        }
+        if (plugin.equalsIgnoreCase("TinsEyeVelocity") || plugin.equalsIgnoreCase("tinseyevelocity")) {
+            if (ReflectionUtils.classExists("me.tins.tinseyevelocity.api.valio.TinsEyeVelocityValioAPIProvider")) {
+                try {
+                    var api = me.tins.tinseyevelocity.api.valio.TinsEyeVelocityValioAPIProvider.getApi();
+                    if (api != null) {
+                        return new VelocityTinsEyeVelocitySupport(this.plugin, channelName);
+                    }
+                } catch (NoClassDefFoundError ignored) {
+                    // tinseyevelocity-api not on classpath
+                }
             }
         }
         return null;
