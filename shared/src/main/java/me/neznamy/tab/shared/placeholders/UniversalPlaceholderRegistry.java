@@ -20,6 +20,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Date;
 import java.util.Map.Entry;
+import java.util.OptionalInt;
 import java.util.regex.Pattern;
 
 /**
@@ -83,11 +84,15 @@ public class UniversalPlaceholderRegistry {
         manager.registerServerPlaceholder(TabConstants.Placeholder.MEMORY_USED, () -> PerformanceUtil.toString((int) ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())/1024/1024)));
         manager.registerServerPlaceholder(TabConstants.Placeholder.MEMORY_USED_GB, () -> decimal2.format((float)(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) /1024/1024/1024));
         manager.registerServerPlaceholder(TabConstants.Placeholder.ONLINE, () -> {
+            ProxySupport proxy = TAB.getInstance().getFeatureManager().getFeature(TabConstants.Feature.PROXY_SUPPORT);
+            if (proxy != null) {
+                OptionalInt total = proxy.getTotalOnlineCount();
+                if (total.isPresent()) return PerformanceUtil.toString(total.getAsInt());
+            }
             int count = 0;
             for (TabPlayer player : TAB.getInstance().getOnlinePlayers()) {
                 if (!player.isVanished()) count++;
             }
-            ProxySupport proxy = TAB.getInstance().getFeatureManager().getFeature(TabConstants.Feature.PROXY_SUPPORT);
             if (proxy != null) {
                 for (ProxyPlayer player : proxy.getProxyPlayers().values()) {
                     if (!player.isVanished()) count++;

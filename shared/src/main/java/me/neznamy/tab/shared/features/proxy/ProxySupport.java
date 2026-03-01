@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.OptionalInt;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -119,6 +120,19 @@ public abstract class ProxySupport extends TabFeature implements JoinListener, Q
      * Unregisters event and proxy message listeners
      */
     public abstract void unregister();
+
+    /**
+     * Returns total online count from the proxy backend when available.
+     * <p>
+     * TinsEyeVelocity can provide this via Valio's heartbeat (more reliable than message sync).
+     * When empty, %online% falls back to local + proxyPlayers count.
+     * </p>
+     *
+     * @return total count if backend provides it, empty otherwise
+     */
+    public OptionalInt getTotalOnlineCount() {
+        return OptionalInt.empty();
+    }
 
     @Override
     public void load() {

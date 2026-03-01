@@ -8,6 +8,8 @@ import me.tins.tinseyevelocity.api.valio.PubSubMessageEvent;
 import me.tins.tinseyevelocity.api.valio.TinsEyeVelocityValioAPIProvider;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.OptionalInt;
+
 /**
  * TinsEyeVelocity implementation for Velocity.
  * Uses embedded Valio (multi-proxy) when TinsEyeVelocity is loaded with multi-proxy enabled.
@@ -64,5 +66,18 @@ public class VelocityTinsEyeVelocitySupport extends ProxySupport {
         } catch (Exception e) {
             TAB.getInstance().getErrorManager().redisBungeeMessageSendFail(e);
         }
+    }
+
+    @Override
+    public OptionalInt getTotalOnlineCount() {
+        try {
+            var api = TinsEyeVelocityValioAPIProvider.getApi();
+            if (api != null) {
+                int count = api.getTotalOnlineCount();
+                if (count >= 0) return OptionalInt.of(count);
+            }
+        } catch (Exception ignored) {
+        }
+        return OptionalInt.empty();
     }
 }
